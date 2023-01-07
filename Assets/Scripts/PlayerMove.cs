@@ -91,6 +91,7 @@ public class PlayerMove : MonoBehaviour
             yield return new WaitForSeconds(5); 
         }
 
+
         IsMoving = true; 
     }
 
