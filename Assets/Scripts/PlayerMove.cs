@@ -50,9 +50,6 @@ public class PlayerMove : MonoBehaviour
                 dir = -90; 
             }
 
-           
-
-     
 
             if (dir == 0)
             {

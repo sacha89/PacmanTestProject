@@ -9,7 +9,12 @@ public class PacManManager : MonoBehaviour
 
     public UIManager uiManager;
 
-    public GameObject circles; 
+    public GameObject circles;
+
+    public Animator playerAnim;
+
+    public PlayerMove playerMove;
+    public EnemyManager enemyManager;
 
      void OnEnable()
     {
@@ -30,6 +35,15 @@ public class PacManManager : MonoBehaviour
             {
                 circleScript.AddScore += ScoreManage;
 
+            }
+        }
+
+        foreach (GameObject enemy in enemyManager.Enemy)
+        {
+            Enemy enemyScript = enemy.GetComponent<Enemy>();
+            if (enemyScript != null)
+            {
+                enemyScript.CollidingWithPlayer += ManagePlayerEnemyCollision;
             }
         }
     }
@@ -53,6 +67,15 @@ public class PacManManager : MonoBehaviour
             {
                 circleScript.AddScore -= ScoreManage;
 
+            }
+        }
+
+        foreach (GameObject enemy in enemyManager.Enemy)
+        {
+            Enemy enemyScript = enemy.GetComponent<Enemy>();
+            if (enemyScript != null)
+            {
+                enemyScript.CollidingWithPlayer -= ManagePlayerEnemyCollision;
             }
         }
     }
@@ -79,5 +102,30 @@ public class PacManManager : MonoBehaviour
     void NextLevel()
     {
         SceneManager.LoadScene("EndScene");
+    }
+
+    IEnumerator ManagePlayerAfterDeath()
+    {
+        int delay = 0; 
+        while (delay < 2)
+        {
+            delay++;
+            yield return new WaitForSeconds(1);
+        }
+
+        Debug.Log("GameOver");
+        playerAnim.SetBool("death", false); 
+    }
+
+    public void ManagePlayerEnemyCollision ()
+    {
+        playerAnim.SetBool("death", true);
+        playerMove.IsMoving = false; 
+        foreach (GameObject enemy in enemyManager.Enemy)
+        {
+            enemy.SetActive(false); 
+        }
+
+        StartCoroutine(ManagePlayerAfterDeath()); 
     }
 }

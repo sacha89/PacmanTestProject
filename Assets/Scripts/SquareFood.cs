@@ -20,7 +20,7 @@ public class SquareFood : ObjectToEat
         {
             SquareFoodDisparition?.Invoke();
             WhenFoodEaten();
-            Debug.Log("eaten");
+           
         }
     }
 }
