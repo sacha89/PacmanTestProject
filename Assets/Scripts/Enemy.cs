@@ -29,7 +29,7 @@ public class Enemy : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-           CollidingWithPlayer?.Invoke();
+            CollidingWithPlayer?.Invoke(); 
            Debug.Log("EnemyCollision");
         }
     }

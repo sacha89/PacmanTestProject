@@ -7,12 +7,12 @@ using System;
 public class ObjectToEat : MonoBehaviour
 {
     public event Action <int> AddScore;
-    protected int foodsScore;
+    protected int foodsScoreIncrementation;
+
+    SpriteRenderer foodSpriteRender;
+    BoxCollider2D foodBoxcollider;
 
     public TextMeshProUGUI scoreText;
-
-    private SpriteRenderer foodSpriteRender;
-    private BoxCollider2D foodBoxcollider;
 
     void OnEnable() 
     {
@@ -45,11 +45,11 @@ public class ObjectToEat : MonoBehaviour
         if (scoreText != null)
         {
             scoreText.gameObject.SetActive(true);
-            scoreText.text = foodsScore.ToString();
+            scoreText.text = foodsScoreIncrementation.ToString();
         }
 
         StartCoroutine(DelayStartHiddenText());
-        AddScore?.Invoke(foodsScore); 
+        AddScore?.Invoke(foodsScoreIncrementation); 
     }
 
     IEnumerator DelayStartHiddenText()

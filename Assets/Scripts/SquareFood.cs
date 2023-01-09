@@ -11,7 +11,7 @@ public class SquareFood : ObjectToEat
     // Start is called before the first frame update
     void Start()
     {
-        foodsScore = 1; 
+        foodsScoreIncrementation = 1; 
     }
 
      void OnTriggerEnter2D(Collider2D collision)

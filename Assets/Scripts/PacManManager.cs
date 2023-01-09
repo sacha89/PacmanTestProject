@@ -14,10 +14,14 @@ public class PacManManager : MonoBehaviour
     public Animator playerAnim;
 
     public PlayerMove playerMove;
-    public EnemyManager enemyManager;
+
+
+    public List<GameObject> Enemies; 
 
      void OnEnable()
     {
+
+        StartCoroutine(ManageEnemyMove()); 
         foreach(Transform square in squares.GetComponentInChildren<Transform>())
         {
             SquareFood squareScript = square.gameObject.GetComponent <SquareFood>();
@@ -38,7 +42,7 @@ public class PacManManager : MonoBehaviour
             }
         }
 
-        foreach (GameObject enemy in enemyManager.Enemy)
+        foreach (GameObject enemy in Enemies)
         {
             Enemy enemyScript = enemy.GetComponent<Enemy>();
             if (enemyScript != null)
@@ -70,7 +74,7 @@ public class PacManManager : MonoBehaviour
             }
         }
 
-        foreach (GameObject enemy in enemyManager.Enemy)
+        foreach (GameObject enemy in Enemies)
         {
             Enemy enemyScript = enemy.GetComponent<Enemy>();
             if (enemyScript != null)
@@ -114,18 +118,69 @@ public class PacManManager : MonoBehaviour
         }
 
         Debug.Log("GameOver");
-        playerAnim.SetBool("death", false); 
+        playerAnim.SetBool("death", false);
+        NextLevel();
     }
 
-    public void ManagePlayerEnemyCollision ()
+    IEnumerator ManageEnemyMove()
+    {
+        int delay = 0;
+        while (delay < 12)
+        {
+            if (delay > 10)
+            {
+                Enemies[0].GetComponent<EnemyMove>().enabled = true;
+            }
+
+            else if (delay > 8)
+            {
+                Enemies[1].GetComponent<EnemyMove>().enabled = true;
+            }
+
+            else if (delay > 6)
+            {
+                Enemies[2].GetComponent<EnemyMove>().enabled = true;
+            }
+
+            else
+            {
+                Enemies[3].GetComponent<EnemyMove>().enabled = true;
+            }
+
+            yield return new WaitForSeconds(2.0f);
+        }
+    }
+
+     void ManagePlayerEnemyCollision ()
     {
         playerAnim.SetBool("death", true);
         playerMove.IsMoving = false; 
-        foreach (GameObject enemy in enemyManager.Enemy)
+        foreach (GameObject enemy in Enemies)
         {
             enemy.SetActive(false); 
         }
 
         StartCoroutine(ManagePlayerAfterDeath()); 
+    }
+    
+    void EnemyToBox()
+    {
+        foreach (GameObject enemy in Enemies)
+        {
+            enemy.SetActive(true);
+            EnemyMove enemyMoveScript = enemy.GetComponent<EnemyMove>(); 
+            if (enemyMoveScript != null)
+            {
+                enemyMoveScript.enabled = false; 
+            }
+
+            Enemy enemyScript = enemy.GetComponent<Enemy>(); 
+            if (enemyScript != null)
+            {
+                enemyScript.EnemyPosReset();
+            }
+        }
+
+        StartCoroutine(ManageEnemyMove());
     }
 }

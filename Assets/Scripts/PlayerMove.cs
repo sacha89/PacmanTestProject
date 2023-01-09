@@ -5,9 +5,9 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     public GameObject pacManPlayer;
-    private Animator pacManAnim;
+    public Animator pacManPlayerAnim;
 
-    private float dir;
+    private float dir = 0;
     Vector3 initialPos; 
     public bool IsMoving; 
 
@@ -16,9 +16,8 @@ public class PlayerMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        pacManAnim = gameObject.GetComponent<Animator>();
         initialPos = transform.position; 
-        PacmanRest();
+        PacmanPlayerReset();
     }
 
     // Update is called once per frame
@@ -34,7 +33,7 @@ public class PlayerMove : MonoBehaviour
 
             else if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                pacManAnim.transform.rotation = Quaternion.Euler(0, 0, 180);
+                pacManPlayerAnim.transform.rotation = Quaternion.Euler(0, 0, 180);
                 dir = 180;
             }
 
@@ -73,9 +72,9 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-        public void PlayAnimation ()
+        public void continuousPlayAnimation ()
             {
-               pacManAnim.enabled = true; 
+               pacManPlayerAnim.enabled = true; 
             }   
 
         IEnumerator StartGameWaiting ()
@@ -85,14 +84,14 @@ public class PlayerMove : MonoBehaviour
         while (delay < 1)
         {
             delay++;
-            yield return new WaitForSeconds(5); 
+            yield return new WaitForSeconds(2); 
         }
 
 
         IsMoving = true; 
     }
 
-     public void PacmanRest()
+     public void PacmanPlayerReset()
     {
         pacManPlayer.transform.rotation = Quaternion.Euler(0, 0, 0);
         dir = 0;
