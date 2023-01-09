@@ -163,24 +163,5 @@ public class PacManManager : MonoBehaviour
         StartCoroutine(ManagePlayerAfterDeath()); 
     }
     
-    void EnemyToBox()
-    {
-        foreach (GameObject enemy in Enemies)
-        {
-            enemy.SetActive(true);
-            EnemyMove enemyMoveScript = enemy.GetComponent<EnemyMove>(); 
-            if (enemyMoveScript != null)
-            {
-                enemyMoveScript.enabled = false; 
-            }
-
-            Enemy enemyScript = enemy.GetComponent<Enemy>(); 
-            if (enemyScript != null)
-            {
-                enemyScript.EnemyPosReset();
-            }
-        }
-
-        StartCoroutine(ManageEnemyMove());
-    }
+ 
 }
