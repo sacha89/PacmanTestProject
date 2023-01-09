@@ -30,12 +30,6 @@ public class Enemy : ObjectToEat
         initialPos = enemy.transform.position; 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
      void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")

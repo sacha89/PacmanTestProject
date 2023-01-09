@@ -111,7 +111,7 @@ public class PacManManager : MonoBehaviour
 
     void NextLevel()
     {
-        SceneManager.LoadScene("EndScene");
+        SceneManager.LoadScene(2);
     }
 
     IEnumerator ManagePlayerAfterDeath()

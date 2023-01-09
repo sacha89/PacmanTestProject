@@ -12,7 +12,6 @@ public class PlayerMove : MonoBehaviour
     public bool IsMoving; 
 
 
-
     // Start is called before the first frame update
     void Start()
     {
