@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class PacManManager : MonoBehaviour
 {
     public GameObject squares;
@@ -16,7 +17,9 @@ public class PacManManager : MonoBehaviour
     public PlayerMove playerMove;
 
 
-    public List<GameObject> Enemies; 
+    public List<GameObject> Enemies;
+
+    static Coroutine EnemyTransfomationCoroutine;
 
      void OnEnable()
     {
@@ -38,6 +41,7 @@ public class PacManManager : MonoBehaviour
             if (circleScript != null)
             {
                 circleScript.AddScore += ScoreManage;
+                circleScript.TransformEnemy += EnemyTransformation;
 
             }
         }
@@ -48,6 +52,7 @@ public class PacManManager : MonoBehaviour
             if (enemyScript != null)
             {
                 enemyScript.CollidingWithPlayer += ManagePlayerEnemyCollision;
+                enemyScript.AddScore += ScoreManage; 
             }
         }
     }
@@ -70,7 +75,7 @@ public class PacManManager : MonoBehaviour
             if (circleScript != null)
             {
                 circleScript.AddScore -= ScoreManage;
-
+                circleScript.TransformEnemy -= EnemyTransformation;
             }
         }
 
@@ -80,6 +85,7 @@ public class PacManManager : MonoBehaviour
             if (enemyScript != null)
             {
                 enemyScript.CollidingWithPlayer -= ManagePlayerEnemyCollision;
+                enemyScript.AddScore -= ScoreManage;
             }
         }
     }
@@ -162,6 +168,51 @@ public class PacManManager : MonoBehaviour
 
         StartCoroutine(ManagePlayerAfterDeath()); 
     }
+
+
+    void EnemyTransformation ()
+    {
+        if (EnemyTransfomationCoroutine != null)
+        {
+            StopCoroutine(ManageBackToEnemyInitialLook());
+        }
+
+        GameState.circleCount--;
+        CheckEmptyMaze(); 
+
+        foreach (GameObject enemy in Enemies)
+        {
+            Enemy enemyScript = enemy.GetComponent<Enemy>(); 
+            if (enemyScript != null)
+            {
+                enemyScript.TransformEnemy(); 
+                EnemyTransfomationCoroutine = StartCoroutine(ManageBackToEnemyInitialLook());
+            }
+        }
+    }
     
- 
+    IEnumerator ManageBackToEnemyInitialLook()
+    {
+        int delay = 0; 
+        while(delay < 12)
+        {
+            delay++;
+            yield return new WaitForSeconds(2);
+        }
+
+        BackToInitailEnemyLook(); 
+
+    }
+
+    void BackToInitailEnemyLook()
+    {
+        foreach (GameObject enemy in Enemies)
+        {
+            Enemy enemyScript = enemy.GetComponent<Enemy>();
+            if (enemyScript != null)
+            {
+                enemyScript.InitialEnemyLook(); 
+            }
+        }
+    }
 }

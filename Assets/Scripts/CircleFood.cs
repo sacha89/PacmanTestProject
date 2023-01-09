@@ -6,7 +6,7 @@ using System;
 public class CircleFood : ObjectToEat
 {
 
-    public event Action ChangeEnemyBehaviour; 
+    public event Action TransformEnemy; 
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +18,7 @@ public class CircleFood : ObjectToEat
     {
         if (collision.tag == "Player")
         {
-            ChangeEnemyBehaviour?.Invoke();
+            TransformEnemy?.Invoke();
             WhenFoodEaten();
         }
     }
